@@ -1,7 +1,9 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const user = require('./routes/userRoutes.js');
 const app = express();
+const userRoutes = require('./routes/userRoutes.js')
 
 require('dotenv').config();
 const PORT = process.env.PORT;
@@ -14,6 +16,9 @@ app.use(cors())
 app.get("/",(req,res)=>{
     res.json("this is homepage")
 })
+
+
+app.use("/user", userRoutes)
 
 app.listen(PORT, ()=> {
     console.log(`000----------------------------Server is running on http://localhost:${PORT}---------------------->>>`);
