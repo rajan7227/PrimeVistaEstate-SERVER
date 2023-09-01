@@ -83,48 +83,60 @@ exports.cancelBookings = async (req, res) => {
       });
       res.send("booking cancelled succesfully");
     }
-  } catch (err){
+  } catch (err) {
     console.log(err.message);
   }
 };
 
-
 //favorite property
 
-exports.favoritePropperty = async (req,res)=>{
+exports.favoritePropperty = async (req, res) => {
   const { email } = req.body;
   const { pid } = req.params;
-  try{
+  try {
     //grab the user
     const user = await prisma.user.findUnique({
-      where: { email:email }
-    })
+      where: { email: email },
+    });
 
     //check the user if he already have that id in its favorite coloum
-    if(user.favResidenciesID.includes(pid)){
+    if (user.favResidenciesID.includes(pid)) {
       //if it includes then we removed it from favorite so we update
       const updateUser = await prisma.user.update({
-        where: {email:email},
-        data:{
-          favResidenciesID:{
-            set: user.favResidenciesID.filter((id)=>id !== pid)
-          }
-        }
-      })
-      res.send({message: "Removed from favorite", user : updateUser})
-    }else {
-      const updateUser = await prisma.user.update({
-        where:{ email:email },
+        where: { email: email },
         data: {
-          favResidenciesID:{
-            push: pid
-          }
-        }
-      })
-      res.send({message: "Added to favorites", user : updateUser})
+          favResidenciesID: {
+            set: user.favResidenciesID.filter((id) => id !== pid),
+          },
+        },
+      });
+      res.send({ message: "Removed from favorite", user: updateUser });
+    } else {
+      const updateUser = await prisma.user.update({
+        where: { email: email },
+        data: {
+          favResidenciesID: {
+            push: pid,
+          },
+        },
+      });
+      res.send({ message: "Added to favorites", user: updateUser });
     }
-  }
-  catch(err){
+  } catch (err) {
     console.log(err.message);
   }
-}
+};
+
+//ALL favorite
+exports.allFavorite = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const favResd = await prisma.user.findUnique({
+      where: { email: email },
+      select: { favResidenciesID: true },
+    });
+    res.send(favResd);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
