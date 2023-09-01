@@ -1,5 +1,8 @@
 const prisma = require("../config/prismaConfig.js");
 
+
+// NEWUSER
+
 exports.addUser = async (req, res) => {
   console.log("creating an user");
   let { email } = req.body;
@@ -13,3 +16,5 @@ exports.addUser = async (req, res) => {
     });
   }
 };
+
+

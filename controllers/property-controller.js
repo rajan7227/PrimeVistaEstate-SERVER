@@ -1,5 +1,7 @@
 const prisma = require("../config/prismaConfig.js");
 
+//CREATE PROPERTY
+
 exports.createProperty = async (req, res) => {
   console.log("adding property");
   const {
@@ -29,7 +31,37 @@ exports.createProperty = async (req, res) => {
       },
     });
     res.send({ message: "Property added succesfully", propertys: property });
-  } catch (err){
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+//GET ALL
+
+exports.getAllProperty = async (req, res) => {
+  try {
+    const allPropertys = await prisma.propertys.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.send(allPropertys);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+//GET SINGLE
+
+exports.singleProperty = async (req, res) => {
+    console.log("GETTING SINGLE PROPERTY");
+    const { id } = req.params;
+  try {
+    const singleProperty = await prisma.propertys.findUnique({
+      where: { id: id},
+    });
+    res.send(singleProperty);
+  } catch (err) {
     console.log(err.message);
   }
 };
