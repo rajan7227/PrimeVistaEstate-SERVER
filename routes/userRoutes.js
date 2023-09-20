@@ -11,8 +11,8 @@ router.route('/bookings').post(usercontroller.getAllBookings)
 //CANCEL BOOKINGS
 router.route('/cancelbooking/:id').post(usercontroller.cancelBookings)
 //ADD  TO FAVORITE
-router.route('/tofavorite/:pid').post(usercontroller.favoritePropperty)
+router.route('/tofavorite/:id').post(usercontroller.favoritePropperty)
 //all favorite
-router.route('/favorite').get(usercontroller.allFavorite)
+router.route('/favorite').post(usercontroller.allFavorite)
 
 module.exports = router;

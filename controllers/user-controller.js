@@ -48,6 +48,7 @@ exports.booking = async (req, res) => {
 //all bookings
 
 exports.getAllBookings = async (req, res) => {
+  console.log("accessing booking")
   const { email } = req.body;
   try {
     const allbookings = await prisma.user.findUnique({
@@ -92,7 +93,7 @@ exports.cancelBookings = async (req, res) => {
 
 exports.favoritePropperty = async (req, res) => {
   const { email } = req.body;
-  const { pid } = req.params;
+  const { id } = req.params;
   try {
     //grab the user
     const user = await prisma.user.findUnique({
@@ -100,13 +101,13 @@ exports.favoritePropperty = async (req, res) => {
     });
 
     //check the user if he already have that id in its favorite coloum
-    if (user.favResidenciesID.includes(pid)) {
+    if (user.favResidenciesID.includes(id)) {
       //if it includes then we removed it from favorite so we update
       const updateUser = await prisma.user.update({
         where: { email: email },
         data: {
           favResidenciesID: {
-            set: user.favResidenciesID.filter((id) => id !== pid),
+            set: user.favResidenciesID.filter((id) => id !== id),
           },
         },
       });
@@ -116,7 +117,7 @@ exports.favoritePropperty = async (req, res) => {
         where: { email: email },
         data: {
           favResidenciesID: {
-            push: pid,
+            push: id,
           },
         },
       });
